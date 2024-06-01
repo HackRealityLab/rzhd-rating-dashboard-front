@@ -7,27 +7,11 @@ import axios from "axios";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import PieChart from "@/components/charts/PieChart";
-
-const getAllPolygons = async () => {
-  const polygonInfo = await axios.get(
-    "http://localhost:8888/api/get_values?name=Полигон"
-  );
-  return polygonInfo;
-};
-
-const getPolygonInfo = async (name: string) => {
-  const polygonInfo = await axios.get(
-    "http://localhost:8888/api/get_polygon_info?name=" + name
-  );
-  return polygonInfo;
-};
-
-const getUnitInfo = async (name: string) => {
-  const unitInfo = await axios.get(
-    "http://localhost:8888/api/get_vehicle_division_info?name=" + name
-  );
-  return unitInfo;
-};
+import {
+  getAllPolygons,
+  getPolygonInfo,
+  getUnitInfo,
+} from "@/utils/apiHandler";
 
 const PolygonsPage = () => {
   // const data = useContext(DataContext);
@@ -89,7 +73,8 @@ const PolygonsPage = () => {
   console.log("@polygons w info", polygonsWithInfo);
   console.log("@vehicles by polygon map", vehiclesMap);
 
-  if (polygonsWithInfo == null) return <div>Загрузка списка полигонов...</div>;
+  if (polygonsWithInfo == null)
+    return <main>Загрузка списка полигонов...</main>;
 
   return (
     <main>
@@ -97,7 +82,11 @@ const PolygonsPage = () => {
         <h1 className="text-h1 font-bold">Полигоны</h1>
         <div className="grid grid-cols-3">
           {polygonsWithInfo?.map((polygon: any) => (
-            <Card key={polygon.name} href={"/polygons/" + polygon.name}>
+            <Card
+              className="h-[340px]"
+              key={polygon.name}
+              href={"/polygons/" + polygon.name}
+            >
               <h2 className="text-h2 font-bold mb-3">{polygon.name}</h2>
               <ul
                 role="list"

@@ -1,14 +1,7 @@
 "use client";
 
-import axios from "axios";
+import { getVehicleInfo } from "@/utils/apiHandler";
 import { useEffect, useState } from "react";
-
-const getVehicleInfo = async (name: string) => {
-  const vehicleInfo = await axios.get(
-    "http://localhost:8888/api/get_vehicle_info?name=" + name
-  );
-  return vehicleInfo;
-};
 
 const VehiclePage = ({
   params,

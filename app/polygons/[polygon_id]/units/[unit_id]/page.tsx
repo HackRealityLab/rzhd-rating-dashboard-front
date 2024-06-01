@@ -1,16 +1,8 @@
 "use client";
 
-import { DataContext } from "@/app/DataContext";
-import axios from "axios";
+import { getUnitInfo } from "@/utils/apiHandler";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-
-const getUnitInfo = async (name: string) => {
-  const unitInfo = await axios.get(
-    "http://localhost:8888/api/get_vehicle_division_info?name=" + name
-  );
-  return unitInfo;
-};
+import { useEffect, useState } from "react";
 
 const UnitPage = ({
   params,
