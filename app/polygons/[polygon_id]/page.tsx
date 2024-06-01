@@ -5,7 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 
-export const getPolygonInfo = async (name: string) => {
+const getPolygonInfo = async (name: string) => {
   const polygonInfo = await axios.get(
     "http://localhost:8888/api/get_polygon_info?name=" + name
   );

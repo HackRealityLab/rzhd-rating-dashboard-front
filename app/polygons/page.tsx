@@ -6,7 +6,6 @@ import { declination } from "@/utils/declinationHandler";
 import axios from "axios";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { getUnitInfo } from "./[polygon_id]/units/[unit_id]/page";
 import PieChart from "@/components/charts/PieChart";
 
 const getAllPolygons = async () => {
@@ -21,6 +20,13 @@ const getPolygonInfo = async (name: string) => {
     "http://localhost:8888/api/get_polygon_info?name=" + name
   );
   return polygonInfo;
+};
+
+const getUnitInfo = async (name: string) => {
+  const unitInfo = await axios.get(
+    "http://localhost:8888/api/get_vehicle_division_info?name=" + name
+  );
+  return unitInfo;
 };
 
 const PolygonsPage = () => {

@@ -5,7 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 
-export const getUnitInfo = async (name: string) => {
+const getUnitInfo = async (name: string) => {
   const unitInfo = await axios.get(
     "http://localhost:8888/api/get_vehicle_division_info?name=" + name
   );
