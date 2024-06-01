@@ -12,7 +12,7 @@ const PolygonsPage = () => {
       <p>{data.polygonsMetrics}</p>
       <div className="flex flex-col">
         <strong>Список полигонов:</strong>
-        {data.polygonsList.map((polygon) => (
+        {data.polygonsList.map((polygon: any) => (
           <Link href={"/polygons/" + polygon.polygon_id} key={polygon.name}>
             {polygon.name}
           </Link>

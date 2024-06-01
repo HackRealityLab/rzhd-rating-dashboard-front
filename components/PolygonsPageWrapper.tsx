@@ -242,10 +242,12 @@ export const initData: Data = {
   polygonsList: polygonsList,
 };
 
-export const DataContext = createContext<Data>(initData);
+export const DataContext = createContext<any>(initData);
 
-const PolygonPageWrapper: React.FC<PropsWithChildren> = ({ children }) => {
-  const [data, setData] = useState(initData);
+const PolygonPageWrapper: React.FC<PropsWithChildren & { data: any }> = ({
+  children,
+  data,
+}) => {
   return <DataContext.Provider value={data}>{children}</DataContext.Provider>;
 };
 
