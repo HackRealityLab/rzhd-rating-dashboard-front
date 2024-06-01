@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --red: #e21a1a;
+  --white: #ffffff;
+  --bg: #f3f3f3;
+  --black-100: #231f20;
+  --black-80: #231f20cc;
+  --black-60: #231f2099;
+  --black-40: #231f2066;
+  --black-20: #231f2033;
+  --gray-100: #1b4358;
+  --gray-80: #1b4358cc;
+  --gray-60: #1b435899;
+  --gray-40: #1b435866;
+  --gray-20: #1b435833;
+  --blue-100: #5cabf4;
+  --blue-80: #5cabf4cc;
+  --blue-60: #5cabf499;
+
+  --h0: 62;
+  --h1: 54/68;
+  --h2: 36/48;
+  --h3: 24/28;
+  --list: 20;
+  --p: 16/24;
+  --label: 14/20;
+}

@@ -1,27 +1,56 @@
 "use client";
 
-import { DataContext } from "@/components/PolygonsPageWrapper";
+import { DataContext } from "@/app/DataContext";
+import axios from "axios";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+
+export const getUnitInfo = async (name: string) => {
+  const unitInfo = await axios.get(
+    "http://localhost:8888/api/get_vehicle_division_info?name=" + name
+  );
+  return unitInfo;
+};
 
 const UnitPage = ({
   params,
 }: {
   params: { polygon_id: string; unit_id: string };
 }) => {
-  const data = useContext(DataContext);
-  const polygon = data.polygonsList.filter(
-    (polygon) => polygon.polygon_id == Number(params.polygon_id)
-  )[0];
-  const unit = polygon.units.filter(
-    (unit) => unit.unit_id == Number(params.unit_id)
-  )[0];
+  const [unit, setUnit] = useState<any>(null);
+
+  useEffect(() => {
+    (async () => {
+      const polygonObject = await getUnitInfo(params.unit_id);
+      console.log("unit found: ", polygonObject.data);
+      setUnit(polygonObject.data);
+    })();
+  }, [params.unit_id]);
+
+  if (unit == null) return <div>Загрузка данных по подразделению...</div>;
+
   return (
     <div>
-      <h6>{unit.name}</h6>
-      <div>{unit.metrics}</div>
+      <h6>{unit["Название подразделения"]}</h6>
+      <p>Соотношение ТС: {unit["Соотношение ТС"]}</p>
+      <p>Соотношение пробега: {unit["Соотношение пробега"]}</p>
+      <p>Средняя манера вождения: {unit["Средняя манера вождения"]}</p>
+      <p>Сумма штрафов: {unit["Сумма штрафов"]}</p>
+      <p>
+        Топ-3 часто используемых ТС:{" "}
+        {unit["Топ-3 часто используемых ТС"].map((vehicle: any) => (
+          <div key={vehicle}>{vehicle}</div>
+        ))}
+      </p>
+      <p>
+        Топ-3 редко используемых ТС:{" "}
+        {unit["Топ-3 редко используемых ТС"].map((vehicle: any) => (
+          <div key={vehicle}>{vehicle}</div>
+        ))}
+      </p>
+
       <strong>Список транспортных средств:</strong>
-      {unit.vehicles.map((vehicle) => (
+      {unit["Топ-3 часто используемых ТС"].map((vehicle: any) => (
         <div key={vehicle.vehicle_id}>
           <Link
             href={
@@ -30,10 +59,10 @@ const UnitPage = ({
               "/units/" +
               params.unit_id +
               "/vehicles/" +
-              vehicle.vehicle_id
+              vehicle
             }
           >
-            {vehicle.name}
+            {vehicle}
           </Link>
         </div>
       ))}

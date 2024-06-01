@@ -1,28 +1,53 @@
 "use client";
 
-import { DataContext } from "@/components/PolygonsPageWrapper";
+import { DataContext } from "@/app/DataContext";
+import axios from "axios";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+
+export const getPolygonInfo = async (name: string) => {
+  const polygonInfo = await axios.get(
+    "http://localhost:8888/api/get_polygon_info?name=" + name
+  );
+  return polygonInfo;
+};
 
 const PolygonPage = ({ params }: { params: { polygon_id: string } }) => {
-  const data = useContext(DataContext);
-  const polygon = data.polygonsList.filter(
-    (polygon) => polygon.polygon_id == Number(params.polygon_id)
-  )[0];
+  const [polygon, setPolygon] = useState<any>(null);
+
+  useEffect(() => {
+    (async () => {
+      const polygonObject = await getPolygonInfo(params.polygon_id);
+      setPolygon(polygonObject.data);
+    })();
+  }, [params.polygon_id]);
+
+  if (polygon == null) return <div>Загрузка данных по полигону...</div>;
   return (
     <div>
-      Метрики по одному полигону #{params.polygon_id}
-      <h5>{polygon.name}</h5>
-      <p>{polygon.metrics}</p>
+      Метрики по одному полигону
+      <h5>{polygon["Название полигона"]}</h5>
+      <p>Сумма штрафов: {polygon["Сумма штрафов"]}</p>
+      <p>Общий пробег: {polygon["Общий пробег"]}</p>
+      <p>Рейтинг подразделений по количеству штрафов: *тут график*</p>
+      <p>Рейтинг подразделений по количесту пробега: *тут график*</p>
       <div className="flex flex-col">
         <strong>Список подразделений:</strong>
-        {polygon.units.map((unit) => (
+        {Object.keys(
+          polygon["Рейтинг подразделений по количеству пробега"]
+        ).map((unit: any) => (
           <Link
-            key={unit.unit_id}
-            href={"/polygons/" + params.polygon_id + "/units/" + unit.unit_id}
+            key={unit}
+            href={
+              "/polygons/" +
+              params.polygon_id +
+              "/units/" +
+              encodeURI(unit).replace("#", "%23")
+            }
           >
-            {unit.name}
+            {unit}
           </Link>
+          // <div key={el}>@ {el}</div>
         ))}
       </div>
     </div>
